@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "794720512655",
+    "project_id": "h-management",
+    "storage_bucket": "h-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794720512655:android:37692c53bf38063e349efa",
+        "android_client_info": {
+          "package_name": "com.example.h_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794720512655-4c0chh63ebpcbj4ctqq3ncd4gperp65t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCds_0NdreNXqaoGQHNBZq1TktcUoO3vEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794720512655-4c0chh63ebpcbj4ctqq3ncd4gperp65t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
