@@ -3,6 +3,7 @@ package com.example.h_management.main_screen.doc_main_screen.new_patient
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -16,17 +17,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.h_management.BuildConfig
 import com.example.h_management.R
+import com.example.h_management.ui.theme.Shapes
 import com.example.h_management.utils.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -53,9 +58,14 @@ fun Issue_List(modal: New_Patient_Modal,viewModel: New_Patient_Vm,index:Int){
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun New_Patient_Form(modifier: Modifier = Modifier,viewModel: New_Patient_Vm){
+fun New_Patient_Form(
+    modifier: Modifier = Modifier,
+    viewModel: New_Patient_Vm
+){
     Column(
-        modifier = Modifier.verticalScroll(rememberScrollState()).fillMaxSize(),
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val context = LocalContext.current
@@ -69,6 +79,8 @@ fun New_Patient_Form(modifier: Modifier = Modifier,viewModel: New_Patient_Vm){
         var issue by rememberSaveable{ mutableStateOf("") }
         val coroutineScope  = rememberCoroutineScope()
         val file = context.createImageFile()
+        var openDialog by rememberSaveable{ mutableStateOf(false) }
+
         val uri = FileProvider.getUriForFile(
             Objects.requireNonNull(context),
             BuildConfig.APPLICATION_ID + ".provider", file
@@ -233,7 +245,8 @@ fun New_Patient_Form(modifier: Modifier = Modifier,viewModel: New_Patient_Vm){
 
         Button(
             onClick = { coroutineScope.launch {
-                viewModel.Add_Patient(capturedImageUri,modal)
+                openDialog = true
+//                viewModel.Add_Patient(capturedImageUri,modal)
             } },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ){
@@ -247,14 +260,47 @@ fun New_Patient_Form(modifier: Modifier = Modifier,viewModel: New_Patient_Vm){
             Text(text = "Add Patient",)
         }
 
+        if(openDialog){
+            AlertDialog(
+                onDismissRequest = { /*TODO*/ },
+                title = {
+                    Text(text = "Admit Patient ? ")
+                },
+                buttons = {
+                    Row(
+                        modifier = Modifier.padding(10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                   viewModel.Add_Patient(capturedImageUri,modal)
+                                   Toast.makeText(context, "NO", Toast.LENGTH_LONG)
+                                       .show()
+                                }
+                                      },
+                        ) {
+                            Text(text = "No")
+                        }
+
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    viewModel.Add_Patient(capturedImageUri,modal)
+                                    Toast.makeText(context, "Yes", Toast.LENGTH_LONG)
+                                        .show()
+                                }
+                            }
+                        ) {
+                            Text(text = "Yes")
+                        }
+                    }
+                }
+            )
+        }
+
     }
 }
-
-
-
-
-
-
 
 
 @Preview(showBackground = true)
@@ -262,7 +308,6 @@ fun New_Patient_Form(modifier: Modifier = Modifier,viewModel: New_Patient_Vm){
 private fun Preview(){
     val nav = rememberNavController()
     Surface(Modifier.fillMaxSize()) {
-
     }
 }
 

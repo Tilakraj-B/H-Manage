@@ -18,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.tasks.await
 
 
